@@ -1,0 +1,54 @@
+{
+  "$schema": "https://developer.microsoft.com/en-us/json-schemas/teams/v1.5/MicrosoftTeams.schema.json",
+  "manifestVersion": "1.5",
+  "id": "92296b50-95a2-11ea-935a-c1eb6f0fdb02",
+  "version": "0.0.1",
+  "packageName": "teamstranslator",
+  "developer": {
+    "name": "FW",
+    "websiteUrl": "https://{{HOSTNAME}}",
+    "privacyUrl": "https://{{HOSTNAME}}/privacy.html",
+    "termsOfUseUrl": "https://{{HOSTNAME}}/tou.html"
+  },
+  "name": {
+    "short": "Teams Translator",
+    "full": "Teams Translator"
+  },
+  "description": {
+    "short": "TODO: add short description here",
+    "full": "TODO: add full description here"
+  },
+  "icons": {
+    "outline": "icon-outline.png",
+    "color": "icon-color.png"
+  },
+  "accentColor": "#D85028",
+  "configurableTabs": [],
+  "staticTabs": [],
+  "bots": [],
+  "connectors": [],
+  "composeExtensions": [
+    {
+      "botId": "{{MICROSOFT_APP_ID}}",
+      "canUpdateConfiguration": false,
+      "commands": [
+        {
+          "id": "msgTranslatorAction",
+          "type": "action",
+          "title": "Translate Message",
+          "description": "Translate the message to another language.",
+          "context": [
+            "message"
+          ],
+          "fetchTask": true
+        }
+      ]
+    }
+  ],
+  "permissions": [
+    "identity"
+  ],
+  "validDomains": [
+    "{{HOSTNAME}}"
+  ]
+}

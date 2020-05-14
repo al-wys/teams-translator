@@ -1,0 +1,16 @@
+{
+    "compilerOptions": {
+        "module": "commonjs",
+        "target": "esnext",
+        "moduleResolution": "node",
+        "noImplicitAny": false,
+        "strictNullChecks": true,
+        "jsx": "react",
+        "sourceMap": true,
+        "experimentalDecorators": true,
+        "resolveJsonModule": true,
+    },
+    "exclude": [
+        "node_modules"
+    ]
+}

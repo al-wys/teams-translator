@@ -1,0 +1,11 @@
+{
+  "generator-teams": {
+    "promptValues": {
+      "developer": "FW",
+      "unitTestsEnabled": false,
+      "useAzureAppInsights": true
+    },
+    "libraryName": "teamsTranslator",
+    "generator-version": "2.13.0"
+  }
+}
