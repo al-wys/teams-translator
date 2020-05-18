@@ -16,6 +16,7 @@ const config = {
         "!./src/app/**/*.scss",
         "!./src/app/web/**/*.*",
         "!./src/app/scripts/**/*.*",
+        "!./src/app/**/*.test.ts",
     ],
     clientWatches: [
         "./src/app/scripts/**/*.*",

@@ -30,17 +30,39 @@
   "composeExtensions": [
     {
       "botId": "{{MICROSOFT_APP_ID}}",
-      "canUpdateConfiguration": false,
+      "canUpdateConfiguration": true,
       "commands": [
         {
-          "id": "msgTranslatorAction",
+          "id": "msgTransToZhAction",
           "type": "action",
-          "title": "Translate Message",
-          "description": "Translate the message to another language.",
+          "title": "Translate Message to Chinese",
+          "description": "Translate the message to Chinese.",
           "context": [
             "message"
           ],
-          "fetchTask": true
+          "fetchTask": true,
+          "parameters": [
+            {
+              "name": "targetLanguage",
+              "title": "Target Language",
+              "description": "The language that you want translate text to.",
+              "inputType": "choiceset",
+              "choices": [
+                {
+                  "title": "简体中文",
+                  "value": "zh-cn"
+                },
+                {
+                  "title": "繁體中文",
+                  "value": "zh-tw"
+                },
+                {
+                  "title": "English",
+                  "value": "en"
+                }
+              ]
+            }
+          ]
         }
       ]
     }
