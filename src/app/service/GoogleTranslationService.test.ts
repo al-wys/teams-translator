@@ -40,7 +40,7 @@ describe("Google Translation Service", () => {
 
   test("'What's your name?' to '你叫什么名字？'", async () => {
     // expect.assertions(1);
-    const res = await service.translate("What's your name?", "zh-cn");
+    const res = await service.translate("What's your name?", "zh-CN");
     expect(res.ok).toBeTruthy();
     expect(res.result).toBe("你叫什么名字？");
     return;

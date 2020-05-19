@@ -8,12 +8,10 @@ import {
 } from "botbuilder";
 
 import * as Util from "util";
-const TextEncoder = Util.TextEncoder;
 
 import * as debug from "debug";
-import { ITranslationService, ITranslationResult } from "../service/ITranslationService";
+import { ITranslationService } from "../service/ITranslationService";
 import GoogleTranslationService from "../service/GoogleTranslationService";
-const log = debug("msteams");
 
 export class TranslatorBot extends TeamsActivityHandler {
   private readonly translationService: ITranslationService;
@@ -24,104 +22,62 @@ export class TranslatorBot extends TeamsActivityHandler {
     this.translationService = new GoogleTranslationService();
   }
 
-  protected handleTeamsMessagingExtensionSubmitAction(context: TurnContext, action: MessagingExtensionAction): Promise<MessagingExtensionActionResponse> {
-    return this.handleTeamsMessagingExtensionFetchTask(context, action);
+  protected async handleTeamsMessagingExtensionSubmitAction(context: TurnContext, action: MessagingExtensionAction): Promise<MessagingExtensionActionResponse> {
+    switch (action.commandId) {
+      case "newTransMsgAction":
+        const targetLanguage = action.data.targetLanguage;
+        const text = action.data.msg;
+
+        return this.translateCommand(text, targetLanguage);
+      default:
+        throw new Error("NotImplemented");
+    }
   }
 
   protected async handleTeamsMessagingExtensionFetchTask(context: TurnContext, action: MessagingExtensionAction): Promise<MessagingExtensionActionResponse> {
-    let msg: string | undefined;
-    if (action.messagePayload && action.messagePayload.body) {
-      msg = action.messagePayload.body.content || msg;
+    switch (action.commandId) {
+      case "msgTransToZhAction":
+        let msg: string | undefined;
+        if (action.messagePayload && action.messagePayload.body) {
+          msg = action.messagePayload.body.content || msg;
+        }
+        return this.translateCommand(msg, "zh-CN");
+      default:
+        throw new Error("NotImplemented");
     }
+  }
 
-    if (msg) {
-      const result = await this.translationService.translate(msg, "zh-cn");
+  private async translateCommand(text: string | undefined, targetLanguage: "zh-CN" | "zh-TW" | "en"): Promise<MessagingExtensionActionResponse> {
+    if (text) {
+      const result = await this.translationService.translate(text, targetLanguage);
 
       if (result.ok) {
-        return {
-          task: {
-            type: "continue",
-            value: {
-              title: "翻译结果",
-              height: "small",
-              width: "small",
-              card: this.createTranslationResultCard(result.result!, `Open in ${this.translationService.translatorTitle}`, (result.url!).toString())
-            }
-          }
-        } as MessagingExtensionActionResponse;
+        // const card = this.createTranslationResultCard(result.result!, `Open in ${this.translationService.translatorTitle}`, result.url);
+        const card = this.createTranslationResultCard(targetLanguage + "\n" + result.url, `Open in ${this.translationService.translatorTitle}`, result.url);
+        return this.createActionResponse("翻译结果", card);
       } else {
         // The status of reponse is not 'OK'
-        return {
-          task: {
-            type: "continue",
-            value: {
-              title: "Error",
-              height: "small",
-              width: "small",
-              card: this.createTranslationResultCard(`Message from translator service: **${result.msg}**`)
-            }
-          }
-        } as MessagingExtensionActionResponse;
+        const card = this.createTranslationResultCard(`Message from translator service: **${result.msg}**`);
+        return this.createActionResponse("Error", card);
       }
     } else {
       // no message
-      return {
-        task: {
-          type: "continue",
-          value: {
-            title: "Error",
-            height: "small",
-            width: "small",
-            card: this.createTranslationResultCard("No Messages Here.")
-          }
-        }
-      } as MessagingExtensionActionResponse;
+      return this.createActionResponse("Error", this.createTranslationResultCard("No Messages Here."));
     }
+  }
 
-    // const adaptiveCard = CardFactory.adaptiveCard({
-    //   body: [
-    //     {
-    //       type: "Container",
-    //       items: [
-    //         {
-    //           type: "TextBlock",
-    //           text: msg,
-    //           wrap: true
-    //         }
-    //       ]
-    //     }
-    //   ],
-    //   actions: [
-    //     {
-    //       type: "Action.OpenUrl",
-    //       title: "Open in Bing",
-    //       url: "https://bing.com"
-    //     }
-    //   ],
-    //   type: "AdaptiveCard",
-    //   version: "1.2"
-    // });
-
-    // const response: MessagingExtensionActionResponse = {
-    //   task: {
-    //     type: "continue",
-    //     value: {
-    //       title: msg,
-    //       height: "small",
-    //       width: "small",
-    //       card: adaptiveCard
-    //     }
-    //   }
-    // } as MessagingExtensionActionResponse;
-
-    // // const response: MessagingExtensionActionResponse = {
-    // //   task: {
-    // //     type: "message",
-    // //     value: result
-    // //   }
-    // // } as MessagingExtensionActionResponse;
-
-    // return Promise.resolve(response);
+  private createActionResponse(title: string, card: Attachment): MessagingExtensionActionResponse {
+    return {
+      task: {
+        type: "continue",
+        value: {
+          title,
+          height: "small",
+          width: "small",
+          card
+        }
+      }
+    } as MessagingExtensionActionResponse;
   }
 
   private createTranslationResultCard(text: string, linkTitle?: string, linkUrl?: string): Attachment {

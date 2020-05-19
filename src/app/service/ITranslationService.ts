@@ -4,11 +4,11 @@ export interface ITranslationResult {
   ok: boolean;
   msg?: string;
   result?: string;
-  url?: URL;
+  url?: string;
 }
 
 export interface ITranslationService {
   translatorTitle: string;
 
-  translate(text: string, targetLanguage: "en" | "zh-cn" | "zh-tw"): Promise<ITranslationResult>;
+  translate(text: string, targetLanguage: "en" | "zh-CN" | "zh-TW"): Promise<ITranslationResult>;
 }

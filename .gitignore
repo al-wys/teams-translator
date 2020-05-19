@@ -12,3 +12,6 @@ connectors.json
 
 # do not include dist files
 dist
+
+# VSCode config
+.vscode/

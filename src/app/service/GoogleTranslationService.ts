@@ -2,12 +2,12 @@ import { ITranslationService, ITranslationResult } from "./ITranslationService";
 
 type GoogleTranslatorResult = string[][][];
 const GOOGLE_TRANS_API: string = "https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&dt=t&tl=";
-const GOOGLE_TRANS_PAGE_URL_PREFIX: string = "https://translate.google.com/?source=gtx_m#view=home&op=translate&sl=auto&tl=zh-CN&text=";
+const GOOGLE_TRANS_PAGE_URL_PREFIX: string = "https://translate.google.com/?source=gtx_m#view=home&op=translate&sl=auto&tl=";
 
 export default class GoogleTranslationService implements ITranslationService {
   public readonly translatorTitle: string = "Google Translator";
 
-  public async translate(text: string, targetLanguage: "en" | "zh-cn" | "zh-tw"): Promise<ITranslationResult> {
+  public async translate(text: string, targetLanguage: "en" | "zh-CN" | "zh-TW"): Promise<ITranslationResult> {
     try {
       const response = await fetch(GOOGLE_TRANS_API + targetLanguage, {
         method: "post",
@@ -27,7 +27,7 @@ export default class GoogleTranslationService implements ITranslationService {
         return {
           ok: true,
           result: translatedText,
-          url: new URL(GOOGLE_TRANS_PAGE_URL_PREFIX + encodeURIComponent(text))
+          url: `${GOOGLE_TRANS_PAGE_URL_PREFIX}${targetLanguage}&text=${encodeURIComponent(text)}`
         };
       } else {
         return {
