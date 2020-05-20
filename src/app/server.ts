@@ -4,10 +4,10 @@ import * as path from "path";
 import * as morgan from "morgan";
 import { MsTeamsApiRouter, MsTeamsPageRouter } from "express-msteams-host";
 import { BotFrameworkAdapter } from "botbuilder";
-import { TranslatorBot } from "./translatorBot/translatorBot";
+import { TranslatorBot } from "./translatorBot/TranslatorBot";
 import * as debug from "debug";
 import * as compression from "compression";
-// import * as appInsights from "applicationinsights";
+import * as appInsights from "applicationinsights";
 
 
 // Initialize debug logging module
@@ -21,7 +21,7 @@ require("dotenv").config();
 
 
 // Set up app insights
-// appInsights.setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY).start();
+appInsights.setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY).start();
 
 
 // The import of components has to be done AFTER the dotenv config
