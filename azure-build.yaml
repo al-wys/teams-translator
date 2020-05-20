@@ -23,7 +23,6 @@ steps:
 - script: |
     npm run test
   displayName: 'test'
-  failOnStderr: true
 
 - script: |
     npm run build
