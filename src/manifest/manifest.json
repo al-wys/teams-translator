@@ -3,7 +3,7 @@
   "manifestVersion": "1.5",
   "id": "92296b50-95a2-11ea-935a-c1eb6f0fdb02",
   "version": "1.0.0",
-  "packageName": "teamstranslator",
+  "packageName": "fw.teamstranslator",
   "developer": {
     "name": "FW",
     "websiteUrl": "https://{{HOSTNAME}}",
