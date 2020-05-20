@@ -52,8 +52,7 @@ export class TranslatorBot extends TeamsActivityHandler {
       const result = await this.translationService.translate(text, targetLanguage);
 
       if (result.ok) {
-        // const card = this.createTranslationResultCard(result.result!, `Open in ${this.translationService.translatorTitle}`, result.url);
-        const card = this.createTranslationResultCard(targetLanguage + "\n" + result.url, `Open in ${this.translationService.translatorTitle}`, result.url);
+        const card = this.createTranslationResultCard(result.result!, `Open in ${this.translationService.translatorTitle}`, result.url);
         return this.createActionResponse("翻译结果", card);
       } else {
         // The status of reponse is not 'OK'
