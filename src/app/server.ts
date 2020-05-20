@@ -21,8 +21,10 @@ require("dotenv").config();
 
 
 // Set up app insights
-appInsights.setup(process.env.APPINSIGHTS_INSTRUMENTATIONKEY).start();
-
+const appInsightsKey = process.env.APPINSIGHTS_INSTRUMENTATIONKEY;
+if (appInsightsKey) {
+    appInsights.setup(appInsightsKey).start();
+}
 
 // The import of components has to be done AFTER the dotenv config
 import * as allComponents from "./TeamsAppsComponents";
